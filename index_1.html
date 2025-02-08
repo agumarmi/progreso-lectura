@@ -1,0 +1,74 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progreso de Lectura</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .progress-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+        .progress-background, .progress-bar {
+            fill: none;
+            stroke-width: 10;
+            stroke-linecap: round;
+        }
+        .progress-background {
+            stroke: #ddd;
+        }
+        .progress-bar {
+            stroke: var(--progress-color, #3498db);
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            transition: stroke-dashoffset 0.5s ease;
+            transform-origin: center;
+            transform: rotate(-90deg);
+        }
+        .progress-text {
+            font-size: 24px;
+            font-weight: bold;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            fill: #555;
+            font: 24px Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container">
+        <svg width="150" height="150" viewBox="0 0 100 100" class="progress-circle">
+            <circle cx="50" cy="50" r="45" class="progress-background" />
+            <circle cx="50" cy="50" r="45" class="progress-bar" id="progress-bar" />
+            <text x="50" y="55" class="progress-text" id="progress-text">0%</text>
+        </svg>
+    </div>
+
+    <script>
+        function loadProgress() {
+            const totalPages = localStorage.getItem("totalPages") || 100;
+            const readPages = localStorage.getItem("readPages") || 0;
+            const color = localStorage.getItem("progressColor") || "#3498db";
+            const progress = (readPages / totalPages) * 100;
+            const circle = document.getElementById("progress-bar");
+            const text = document.getElementById("progress-text");
+            
+            const dashOffset = 283 - (283 * progress) / 100;
+            circle.style.strokeDashoffset = dashOffset;
+            circle.style.stroke = color;
+            text.textContent = `${Math.round(progress)}%`;
+        }
+
+        window.onload = loadProgress;
+    </script>
+</body>
+</html>

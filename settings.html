@@ -1,0 +1,27 @@
+<!-- settings.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de Progreso</title>
+</head>
+<body>
+    <h1>Configuración del Progreso</h1>
+    <label>Páginas Totales: <input type="number" id="totalPages"></label><br>
+    <label>Páginas Leídas: <input type="number" id="readPages"></label><br>
+    <label>Color del Progreso: <input type="color" id="progressColor"></label><br>
+    <button onclick="saveSettings()">Guardar</button>
+    <script>
+        function saveSettings() {
+            const totalPages = document.getElementById("totalPages").value || 100;
+            const readPages = document.getElementById("readPages").value || 0;
+            const color = document.getElementById("progressColor").value || "#3498db";
+            
+            localStorage.setItem("totalPages", totalPages);
+            localStorage.setItem("readPages", readPages);
+            localStorage.setItem("progressColor", color);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visor de Imágenes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Visor de Imágenes desde URL</h1>
+    <input type="text" id="imageUrl" placeholder="Introduce la URL de la imagen">
+    <button onclick="mostrarImagen()">Mostrar Imagen</button>
+    <br>
+    <img id="preview" src="" alt="Imagen mostrada aquí">
+
+    <script>
+        function convertirGoogleDriveUrl(url) {
+            const match = url.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
+            return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : url;
+        }
+
+        function mostrarImagen() {
+            let url = document.getElementById('imageUrl').value;
+            url = convertirGoogleDriveUrl(url);
+            Image.getElementById('preview').src = url;
+        }
+    </script>
+</body>
+</html>
