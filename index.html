@@ -1,4 +1,164 @@
-<!-- index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progreso de Lectura</title>
+
+    <!-- Estilos CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #circle-container {
+            position: relative;
+        }
+
+        .circle-background {
+            fill: none;
+            stroke: #e6e6e6;
+            stroke-width: 15;
+        }
+
+        .circle-progress {
+            fill: none;
+            stroke-width: 15;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.3s;
+        }
+
+        #progress-text {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        input[type="number"], input[type="text"] {
+            margin: 10px;
+            padding: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilos de Pickr */
+        .pcr-btn {
+            display: inline-block;
+            padding: 5px;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .pcr-btn:focus {
+            outline: none;
+        }
+    </style>
+
+    <!-- Incluir Pickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Progreso de Lectura</h1>
+        <div id="circle-container">
+            <svg width="150" height="150" viewBox="0 0 150 150">
+                <circle cx="75" cy="75" r="70" class="circle-background" />
+                <circle id="circle-progress" cx="75" cy="75" r="70" class="circle-progress" stroke-dasharray="440" stroke-dashoffset="440" />
+            </svg>
+            <div id="progress-text">0%</div>
+        </div>
+
+        <label for="pages-total">Páginas Totales:</label>
+        <input type="number" id="pages-total" value="300">
+        <label for="pages-read">Páginas Leídas:</label>
+        <input type="number" id="pages-read" value="50">
+
+        <label for="color-picker">Selecciona color:</label>
+        <div id="color-picker"></div>
+
+        <label for="text-selector">Texto del Progreso:</label>
+        <input type="text" id="text-selector" value="Lectura: ">
+
+        <button onclick="updateProgress()">Actualizar Progreso</button>
+    </div>
+
+    <script>
+        // Inicialización de Pickr
+        const pickr = Pickr.create({
+            el: '#color-picker',
+            theme: 'nano', // Tema de Pickr (nano es el más pequeño)
+            default: '#00bcd4', // Color predeterminado
+            swatches: ['#00bcd4', '#ff4081', '#4caf50', '#ff9800', '#9e9e9e'], // Colores sugeridos
+            components: {
+                // Solo lo básico, sin opciones extra
+                preview: true,
+                opacity: true,
+                hue: true,
+                interaction: {
+                    hex: true,
+                    rgba: true,
+                    hsla: true,
+                    cmyk: true,
+                }
+            }
+        });
+
+        // Obtener el color seleccionado y usarlo para actualizar el progreso
+        pickr.on('change', (color) => {
+            const selectedColor = color.toHEXA().toString(); // Obtener el color en formato hexadecimal
+            document.getElementById('circle-progress').style.stroke = selectedColor;
+        });
+
+        // Función para actualizar el progreso
+        function updateProgress() {
+            const totalPages = document.getElementById('pages-total').value;
+            const pagesRead = document.getElementById('pages-read').value;
+            const textPrefix = document.getElementById('text-selector').value;
+
+            // Calcular el porcentaje de progreso
+            const progress = (pagesRead / totalPages) * 100;
+            const strokeOffset = 440 - (440 * progress / 100);
+
+            // Actualizar el progreso en el círculo
+            document.getElementById('circle-progress').style.strokeDashoffset = strokeOffset;
+            
+            // Actualizar el texto del porcentaje
+            document.getElementById('progress-text').textContent = `${textPrefix} ${Math.round(progress)}%`;
+        }
+    </script>
+</body>
+</html>
+
+<!-- index.html 
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -72,3 +232,4 @@
     </script>
 </body>
 </html>
+-->
