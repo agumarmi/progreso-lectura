@@ -1,45 +1,74 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visor de Imágenes</title>
+    <title>Progreso de Lectura</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
         }
-        input {
-            width: 80%;
-            padding: 10px;
-            margin: 10px 0;
+        .progress-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
         }
-        img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 20px;
+        .progress-background, .progress-bar {
+            fill: none;
+            stroke-width: 10;
+            stroke-linecap: round;
+        }
+        .progress-background {
+            stroke: #ddd;
+        }
+        .progress-bar {
+            stroke: var(--progress-color, #3498db);
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            transition: stroke-dashoffset 0.5s ease;
+            transform-origin: center;
+            transform: rotate(-90deg);
+        }
+        .progress-text {
+            font-size: 24px;
+            font-weight: bold;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            fill: #555;
+            font: 24px Arial, sans-serif;
         }
     </style>
 </head>
 <body>
-    <h1>Visor de Imágenes desde URL</h1>
-    <input type="text" id="imageUrl" placeholder="Introduce la URL de la imagen">
-    <button onclick="mostrarImagen()">Mostrar Imagen</button>
-    <br>
-    <img id="preview" src="" alt="Imagen mostrada aquí">
+    <div class="progress-container">
+        <svg width="150" height="150" viewBox="0 0 100 100" class="progress-circle">
+            <circle cx="50" cy="50" r="45" class="progress-background" />
+            <circle cx="50" cy="50" r="45" class="progress-bar" id="progress-bar" />
+            <text x="50" y="55" class="progress-text" id="progress-text">0%</text>
+        </svg>
+    </div>
 
     <script>
-        function convertirGoogleDriveUrl(url) {
-            const match = url.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
-            return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : url;
+        function loadProgress() {
+            const totalPages = localStorage.getItem("totalPages") || 100;
+            const readPages = localStorage.getItem("readPages") || 0;
+            const color = localStorage.getItem("progressColor") || "#3498db";
+            const progress = (readPages / totalPages) * 100;
+            const circle = document.getElementById("progress-bar");
+            const text = document.getElementById("progress-text");
+            
+            const dashOffset = 283 - (283 * progress) / 100;
+            circle.style.strokeDashoffset = dashOffset;
+            circle.style.stroke = color;
+            text.textContent = `${Math.round(progress)}%`;
         }
 
-        function mostrarImagen() {
-            let url = document.getElementById('imageUrl').value;
-            url = convertirGoogleDriveUrl(url);
-            Image.getElementById('preview').src = url;
-        }
+        window.onload = loadProgress;
     </script>
 </body>
 </html>
