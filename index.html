@@ -20,7 +20,7 @@
         .container {
             text-align: center;
             padding: 20px;
-            background-color: white;
+            background-color: transparent;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
@@ -37,6 +37,7 @@
 
         .circle-progress {
             fill: none;
+            transform: rotate(-90deg); /* Rota para iniciar desde la parte superior */
             stroke-width: 15;
             stroke-linecap: round;
             transition: stroke-dashoffset 0.3s;
@@ -80,6 +81,39 @@
         .pcr-btn:focus {
             outline: none;
         }
+        /* Forma del ojo */
+        .hide-icon::before {
+            content: '';
+            width: 100%;
+            height: 50%;
+            background: none;
+            border: 2px solid black;
+            border-radius: 50%;
+            position: absolute;
+            top: 25%;
+            left: 0;
+            box-sizing: border-box;
+        }
+
+        /* Pupila */
+        .hide-icon::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: black;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+
+        .draggable:hover .resize-handle,
+        .draggable:hover .hide-icon {
+            display: block;
+            /* Visible solo durante el hover */
+        }
     </style>
 
     <!-- Incluir Pickr -->
@@ -87,28 +121,30 @@
     <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Progreso de Lectura</h1>
-        <div id="circle-container">
+    <div class="container" class="draggable">
+        <!--<h1>Progreso de Lectura</h1>-->
+        <div id="circle-container" class="draggable">
             <svg width="150" height="150" viewBox="0 0 150 150">
                 <circle cx="75" cy="75" r="70" class="circle-background" />
                 <circle id="circle-progress" cx="75" cy="75" r="70" class="circle-progress" stroke-dasharray="440" stroke-dashoffset="440" />
             </svg>
             <div id="progress-text">0%</div>
         </div>
+        <div class="totales" class="draggable">
+            <label for="pages-total">Páginas Totales:</label>
+            <input type="number" id="pages-total" value="300">
+            <label for="pages-read">Páginas Leídas:</label>
+            <input type="number" id="pages-read" value="50">
+        
 
-        <label for="pages-total">Páginas Totales:</label>
-        <input type="number" id="pages-total" value="300">
-        <label for="pages-read">Páginas Leídas:</label>
-        <input type="number" id="pages-read" value="50">
+            <label for="color-picker">Selecciona color:</label>
+            <div id="color-picker"></div>
 
-        <label for="color-picker">Selecciona color:</label>
-        <div id="color-picker"></div>
+            <label for="text-selector">Texto del Progreso:</label>
+            <input type="text" id="text-selector" value="Lectura: ">
 
-        <label for="text-selector">Texto del Progreso:</label>
-        <input type="text" id="text-selector" value="Lectura: ">
-
-        <button onclick="updateProgress()">Actualizar Progreso</button>
+            <button onclick="updateProgress()">Actualizar Progreso</button>
+        </div>
     </div>
 
     <script>
