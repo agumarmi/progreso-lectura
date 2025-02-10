@@ -20,14 +20,16 @@
         .container {
             text-align: center;
             padding: 20px;
-            background-color: transparent;
+            background-color: white;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
 
         #circle-container {
-            position: relative;
+            position: absolute;
+            cursor: grab;
         }
+        
 
         .circle-background {
             fill: none;
@@ -37,7 +39,6 @@
 
         .circle-progress {
             fill: none;
-            transform: rotate(-90deg); /* Rota para iniciar desde la parte superior */
             stroke-width: 15;
             stroke-linecap: round;
             transition: stroke-dashoffset 0.3s;
@@ -59,10 +60,12 @@
 
         button {
             padding: 10px 20px;
-            background-color: #007bff;
+            background-color: #d18858;
             color: white;
-            border: none;
+            border: thin;
             cursor: pointer;
+            display: block; /* Hace que los botones ocupen una línea completa */
+            margin-bottom: 10px; /* Espacio entre ellos */
         }
 
         button:hover {
@@ -81,39 +84,8 @@
         .pcr-btn:focus {
             outline: none;
         }
-        /* Forma del ojo */
-        .hide-icon::before {
-            content: '';
-            width: 100%;
-            height: 50%;
-            background: none;
-            border: 2px solid black;
-            border-radius: 50%;
-            position: absolute;
-            top: 25%;
-            left: 0;
-            box-sizing: border-box;
-        }
 
-        /* Pupila */
-        .hide-icon::after {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: black;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-
-        .draggable:hover .resize-handle,
-        .draggable:hover .hide-icon {
-            display: block;
-            /* Visible solo durante el hover */
-        }
+        
     </style>
 
     <!-- Incluir Pickr -->
@@ -121,32 +93,35 @@
     <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr"></script>
 </head>
 <body>
-    <div class="container" class="draggable">
-        <!--<h1>Progreso de Lectura</h1>-->
-        <div id="circle-container" class="draggable">
-            <svg width="150" height="150" viewBox="0 0 150 150">
-                <circle cx="75" cy="75" r="70" class="circle-background" />
-                <circle id="circle-progress" cx="75" cy="75" r="70" class="circle-progress" stroke-dasharray="440" stroke-dashoffset="440" />
-            </svg>
-            <div id="progress-text">0%</div>
-        </div>
-        <div class="totales" class="draggable">
+    <div id="circle-container" draggable="true">
+        <svg width="200" height="200" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="65" class="circle-background" />
+            <circle id="circle-progress" cx="100" cy="100" r="65" class="circle-progress" stroke-dasharray="440" stroke-dashoffset="440" transform="rotate(-90 100 100)" />
+        </svg>
+        <div id="progress-text">0%</div>
+    </div>
+    <div class="container" id = "container" draggable="true">
+        
+        <h1>Progreso de Lectura</h1>
             <label for="pages-total">Páginas Totales:</label>
             <input type="number" id="pages-total" value="300">
+            <br>
             <label for="pages-read">Páginas Leídas:</label>
             <input type="number" id="pages-read" value="50">
-        
-
+            <br>
             <label for="color-picker">Selecciona color:</label>
             <div id="color-picker"></div>
 
-            <label for="text-selector">Texto del Progreso:</label>
-            <input type="text" id="text-selector" value="Lectura: ">
-
+            <!--<label for="text-selector">Texto del Progreso:</label>-->
+            <!--<input type="text" id="text-selector" value="Lectura: ">-->
+            <br>
             <button onclick="updateProgress()">Actualizar Progreso</button>
-        </div>
     </div>
-
+    <br>
+    <button onclick="toggleDiv()">Mostrar/Ocultar progreso</button>
+    <br>
+    <button onclick="toggleDiv_container()">Mostrar/Ocultar configuración</button> 
+    
     <script>
         // Inicialización de Pickr
         const pickr = Pickr.create({
@@ -178,7 +153,8 @@
         function updateProgress() {
             const totalPages = document.getElementById('pages-total').value;
             const pagesRead = document.getElementById('pages-read').value;
-            const textPrefix = document.getElementById('text-selector').value;
+            //const textPrefix = document.getElementById('text-selector').value;
+            const textPrefix = ' ';
 
             // Calcular el porcentaje de progreso
             const progress = (pagesRead / totalPages) * 100;
@@ -191,81 +167,65 @@
             document.getElementById('progress-text').textContent = `${textPrefix} ${Math.round(progress)}%`;
         }
     </script>
-</body>
-</html>
-
-<!-- index.html 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progreso de Lectura</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
+    <script>
+        let div2 = document.getElementById('container');
+    
+        // Función para mostrar/ocultar el div
+        function toggleDiv_container() {
+            div2.style.display = (div2.style.display === "none") ? "block" : "none";
         }
-        .progress-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-        }
-        .progress-background, .progress-bar {
-            fill: none;
-            stroke-width: 10;
-            stroke-linecap: round;
-        }
-        .progress-background {
-            stroke: #ddd;
-        }
-        .progress-bar {
-            stroke: var(--progress-color, #3498db);
-            stroke-dasharray: 283;
-            stroke-dashoffset: 283;
-            transition: stroke-dashoffset 0.5s ease;
-            transform-origin: center;
-            transform: rotate(-90deg);
-        }
-        .progress-text {
-            font-size: 24px;
-            font-weight: bold;
-            text-anchor: middle;
-            dominant-baseline: middle;
-            fill: #555;
-            font: 24px Arial, sans-serif;
-        }
-    </style>
-</head>
-<body>
-    <div class="progress-container">
-        <svg width="150" height="150" viewBox="0 0 100 100" class="progress-circle">
-            <circle cx="50" cy="50" r="45" class="progress-background" />
-            <circle cx="50" cy="50" r="45" class="progress-bar" id="progress-bar" />
-            <text x="50" y="55" class="progress-text" id="progress-text">0%</text>
-        </svg>
-    </div>
+        // Variables para guardar la posición
+        let offsetX_c = 0, offsetY_c = 0;
+    
+        // Evento cuando empieza el arrastre
+        div2.addEventListener("dragstart", (e) => {
+            offsetX_c = e.clientX - div2.offsetLeft;
+            offsetY_c = e.clientY - div2.offsetTop;
+            e.dataTransfer.setData("text/plain", ""); // Necesario para permitir el arrastre en algunos navegadores
+        });
+    
+        // Permitir soltar en cualquier parte del documento
+        document.addEventListener("dragover", (e) => {
+            event.preventDefault(); // Necesario para permitir el drop
+        });
+    
+        // Evento cuando el div2 es soltado
+        document.addEventListener("drop", (event) => {
+            event.preventDefault();
+            div2.style.left = `${event.clientX - offsetX_c}px`;
+            div2.style.top = `${event.clientY - offsetY_c}px`;
+        });
+    </script>
 
     <script>
-        function loadProgress() {
-            const totalPages = localStorage.getItem("totalPages") || 100;
-            const readPages = localStorage.getItem("readPages") || 0;
-            const color = localStorage.getItem("progressColor") || "#3498db";
-            const progress = (readPages / totalPages) * 100;
-            const circle = document.getElementById("progress-bar");
-            const text = document.getElementById("progress-text");
-            
-            const dashOffset = 283 - (283 * progress) / 100;
-            circle.style.strokeDashoffset = dashOffset;
-            circle.style.stroke = color;
-            text.textContent = `${Math.round(progress)}%`;
+        let div = document.getElementById('circle-container');
+    
+        // Función para mostrar/ocultar el div
+        function toggleDiv() {
+            div.style.display = (div.style.display === "none") ? "block" : "none";
         }
-
-        window.onload = loadProgress;
+    
+        // Variables para guardar la posición
+        let offsetX = 0, offsetY = 0;
+    
+        // Evento cuando empieza el arrastre
+        div.addEventListener("dragstart", (e) => {
+            offsetX = e.clientX - div.offsetLeft;
+            offsetY = e.clientY - div.offsetTop;
+            e.dataTransfer.setData("text/plain", ""); // Necesario para permitir el arrastre en algunos navegadores
+        });
+    
+        // Permitir soltar en cualquier parte del documento
+        document.addEventListener("dragover", (e) => {
+            e.preventDefault(); // Necesario para permitir el drop
+        });
+    
+        // Evento cuando el div es soltado
+        document.addEventListener("drop", (e) => {
+            e.preventDefault();
+            div.style.left = `${e.clientX - offsetX}px`;
+            div.style.top = `${e.clientY - offsetY}px`;
+        });
     </script>
 </body>
 </html>
--->
