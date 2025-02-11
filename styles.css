@@ -8,7 +8,26 @@ body {
     margin: 0;
 }
 
-.container {
+.color-picker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    
+}
+
+
+.buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#container {
+    position: absolute;
+    cursor: grab;
     text-align: center;
     padding: 20px;
     background-color: white;
@@ -57,6 +76,7 @@ button {
     cursor: pointer;
     display: block; /* Hace que los botones ocupen una línea completa */
     margin-bottom: 10px; /* Espacio entre ellos */
+    border-radius: 5px;
 }
 
 button:hover {
