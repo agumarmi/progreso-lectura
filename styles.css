@@ -14,15 +14,19 @@ body {
     align-items: center;
     flex-direction: column;
     padding: 20px;
+    background-color: white;
     
 }
 
 
 .buttons{
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
+    width: 200px; /* Ajusta el ancho según lo necesites */
+}
+button {
+    width: 100%;
 }
 
 #container {
@@ -33,11 +37,16 @@ body {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    right: 0;
+    bottom: 0;
+    margin: 10px;
 }
 
 #circle-container {
     position: absolute;
     cursor: grab;
+    top: 0;
+    left: 0;
 }
 
 
@@ -63,9 +72,19 @@ body {
     font-weight: bold;
 }
 
+#progress-text-pages {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    font-weight: bold;
+}
+
 input[type="number"], input[type="text"] {
     margin: 10px;
     padding: 5px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 button {
@@ -77,6 +96,7 @@ button {
     display: block; /* Hace que los botones ocupen una línea completa */
     margin-bottom: 10px; /* Espacio entre ellos */
     border-radius: 5px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 button:hover {
@@ -94,4 +114,23 @@ button:hover {
 
 .pcr-btn:focus {
     outline: none;
+}
+.config {
+    position: absolute;
+    cursor: grab;
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+.titulo {
+    font-size: 30px;
+    font-weight: normal;
+    margin-bottom: 10px;    
+}
+
+
+.container {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
