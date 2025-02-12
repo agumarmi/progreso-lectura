@@ -106,10 +106,11 @@ function showContainer() {
  }
 
 // Variables para guardar la posición
-let offsetX = 0, offsetY = 0, offsetA = 0, offsetB = 0;
+let offsetX = 0, offsetY = 0;
+
 
 // Evento cuando empieza el arrastre
-circle_container.addEventListener("dragstart", (e) => {
+document.addEventListener("dragstart", (e) => {
     offsetX = e.clientX - circle_container.offsetLeft;
     offsetY = e.clientY - circle_container.offsetTop;
     e.dataTransfer.setData("text/plain", ""); // Necesario para permitir el arrastre en algunos navegadores
@@ -124,6 +125,7 @@ document.addEventListener("drop", (e) => {
     circle_container.style.left = `${e.clientX - offsetX}px`;
     circle_container.style.top = `${e.clientY - offsetY}px`;
 });
+
 // // Evento cuando empieza el arrastre
 // div_.addEventListener("dragstart", (ev) => {
 //     offsetA = ev.clientX - div_.offsetLeft;

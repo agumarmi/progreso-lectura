@@ -4,7 +4,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f9;
+    background-color: #f4f4f900;
     margin: 0;
 }
 
@@ -117,7 +117,10 @@ button:hover {
 }
 .config {
     position: absolute;
-    cursor: grab;
+    /*cursor: grab;*/
+    position: absolute;
+    top: 20%;
+    right: 2%;
     text-align: center;
     padding: 20px;
     background-color: white;
