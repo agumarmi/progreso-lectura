@@ -60,6 +60,7 @@ function delPage() {
     pagesRead.value = parseInt(pagesRead.value) - 1;
     updateProgress();
 }
+
 //--------------- Función para actualizar el progreso
 function updateProgress() {
     const totalPages = document.getElementById('pages-total').value;
