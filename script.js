@@ -74,8 +74,18 @@ function updateProgress() {
     document.getElementById('circle-progress').style.strokeDashoffset = strokeOffset;
     
     // Actualizar el texto del porcentaje
-    document.getElementById('progress-text').textContent = `${textPrefix} ${Math.round(progress)}%`;
-    document.getElementById('progress-text-pages').textContent = `${pagesRead} / ${totalPages}`;
+    if(totalPages != 0) {
+        document.getElementById('progress-text').textContent = `${textPrefix} ${Math.round(progress)}%`;
+        document.getElementById('progress-text-pages').textContent = `${pagesRead} / ${totalPages}`;
+    } else {
+        document.getElementById('progress-text').textContent = `${textPrefix} 0%`;
+        document.getElementById('progress-text-pages').textContent = `0 / 0`;
+    }
+}
+//--------------- Función para mostrar todo
+function showAll() {
+    showContainer();
+    showConfig();
 }
 
 //--------------- Mostrar/ ocultar el div
@@ -93,10 +103,22 @@ function showProgress() {
 function showContainer() {
     container.style.display = (container.style.display === "none") ? "block" : "none";
 }
+
+//Función para resetear el progreso
+function resetProgress() {
+    document.getElementById('pages-read').value = 0;
+    document.getElementById('pages-total').value = 0;
+    updateProgress();
+}
  //Función para mostrar/ocultar las páginas 
  function showPages() {
     const pages = document.getElementById('progress-text-pages');
     pages.style.display = (pages.style.display === "none") ? "block" : "none";
+ }
+
+ //Función para mostrar/ocultar la configuración	
+ function showConfig() {
+    config.style.display = (config.style.display === "none") ? "block" : "none";
  }
 
  //Función para mostrar/ocultar el porcentaje
