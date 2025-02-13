@@ -72,21 +72,27 @@ function delPage() {
 
 //--------------- Función para actualizar el progreso
 function updateProgress() {
-    const totalPages = parseInt(document.getElementById('pages-total').value);
+    let totalPages = parseInt(document.getElementById('pages-total').value);
     let pagesRead = parseInt(document.getElementById('pages-read').value);
     const textPrefix = ' ';
 
     if (pagesRead > totalPages) {
         pagesRead = totalPages;
+        document.getElementById('pages-read').value = totalPages;
     }
-    if (pagesRead < 0) {
+    if (totalPages < 0) {
+        totalPages = 0;
+        document.getElementById('pages-total').value = totalPages;
+    }
+    if (pagesRead <= 0) {
         pagesRead = 0;
+        document.getElementById('pages-read').value = pagesRead;
     }
     // Calcular el porcentaje de progreso
     const progress = (pagesRead / totalPages) * 100;
     const strokeOffset = 440 - (440 * progress / 100);
 
-    
+
     // Actualizar el texto del porcentaje
     if(totalPages != 0) {
         document.getElementById('circle-progress').style.strokeDashoffset = strokeOffset;
