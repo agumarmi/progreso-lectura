@@ -4,37 +4,14 @@ const pickr = Pickr.create({
     el: '.color-picker',
     theme: 'classic', // or 'monolith', or 'nano'
     alignment: 'center',
-    swatches: [
-        'rgba(244, 67, 54, 1)',
-        'rgba(233, 30, 99, 0.95)',
-        'rgba(156, 39, 176, 0.9)',
-        'rgba(103, 58, 183, 0.85)',
-        'rgba(63, 81, 181, 0.8)',
-        'rgba(33, 150, 243, 0.75)',
-        'rgba(3, 169, 244, 0.7)',
-        'rgba(0, 188, 212, 0.7)',
-        'rgba(0, 150, 136, 0.75)',
-        'rgba(76, 175, 80, 0.8)',
-        'rgba(139, 195, 74, 0.85)',
-        'rgba(205, 220, 57, 0.9)',
-        'rgba(255, 235, 59, 0.95)',
-        'rgba(255, 193, 7, 1)'
-    ],
-
+    swatches: ["#f39c12", "#e74c3c", "#8e44ad", "#3498db", "#1abc9c", "#2ecc71", "#f1c40f", "#e67e22", "#ecf0f1"],
     components: {
-
-        // Main components
         preview: true,
         opacity: true,
         hue: true,
-
-        // Input / output Options
         interaction: {
             hex: true,
             rgba: true,
-            hsla: true,
-            hsva: true,
-            cmyk: true,
             input: true,
             clear: true,
             save: true
@@ -43,9 +20,41 @@ const pickr = Pickr.create({
 });
 
 // Obtener el color seleccionado y usarlo para actualizar el progreso
-pickr.on('change', (color) => {
+pickr.on('save', (color) => {
     const selectedColor = color.toHEXA().toString(); // Obtener el color en formato hexadecimal
     document.getElementById('circle-progress').style.stroke = selectedColor;
+    pickr.hide()
+});
+
+
+
+//--------------- Pickr texto:
+
+const pickr_text = Pickr.create({
+    el: '.color-picker-text',
+    theme: 'classic', // or 'monolith', or 'nano'
+    alignment: 'center',
+    swatches: ["#f39c12", "#e74c3c", "#8e44ad", "#3498db", "#1abc9c", "#2ecc71", "#f1c40f", "#e67e22", "#ecf0f1"],
+    components: {
+        preview: true,
+        opacity: true,
+        hue: true,
+        interaction: {
+            hex: true,
+            rgba: true,
+            input: true,
+            clear: true,
+            save: true
+        }
+    }
+});
+
+// Obtener el color seleccionado y usarlo para actualizar el progreso
+pickr_text.on('save', (color) => {
+    const selectedColor = color.toHEXA().toString(); // Obtener el color en formato hexadecimal
+    document.getElementById('progress-text').style.color = selectedColor;
+    document.getElementById('progress-text-pages').style.color = selectedColor;
+    pickr_text.hide();
 });
 
 //--------------- Función para añadir una página
@@ -63,22 +72,28 @@ function delPage() {
 
 //--------------- Función para actualizar el progreso
 function updateProgress() {
-    const totalPages = document.getElementById('pages-total').value;
-    const pagesRead = document.getElementById('pages-read').value;
+    const totalPages = parseInt(document.getElementById('pages-total').value);
+    let pagesRead = parseInt(document.getElementById('pages-read').value);
     const textPrefix = ' ';
 
+    if (pagesRead > totalPages) {
+        pagesRead = totalPages;
+    }
+    if (pagesRead < 0) {
+        pagesRead = 0;
+    }
     // Calcular el porcentaje de progreso
     const progress = (pagesRead / totalPages) * 100;
     const strokeOffset = 440 - (440 * progress / 100);
 
-    // Actualizar el progreso en el círculo
-    document.getElementById('circle-progress').style.strokeDashoffset = strokeOffset;
     
     // Actualizar el texto del porcentaje
     if(totalPages != 0) {
+        document.getElementById('circle-progress').style.strokeDashoffset = strokeOffset;
         document.getElementById('progress-text').textContent = `${textPrefix} ${Math.round(progress)}%`;
         document.getElementById('progress-text-pages').textContent = `${pagesRead} / ${totalPages}`;
     } else {
+        document.getElementById('circle-progress').style.strokeDashoffset = null;
         document.getElementById('progress-text').textContent = `${textPrefix} 0%`;
         document.getElementById('progress-text-pages').textContent = `0 / 0`;
     }
@@ -131,7 +146,6 @@ function resetProgress() {
 // Variables para guardar la posición
 let offsetX = 0, offsetY = 0;
 
-
 // Evento cuando empieza el arrastre
 document.addEventListener("dragstart", (e) => {
     offsetX = e.clientX - circle_container.offsetLeft;
@@ -148,20 +162,3 @@ document.addEventListener("drop", (e) => {
     circle_container.style.left = `${e.clientX - offsetX}px`;
     circle_container.style.top = `${e.clientY - offsetY}px`;
 });
-
-// // Evento cuando empieza el arrastre
-// div_.addEventListener("dragstart", (ev) => {
-//     offsetA = ev.clientX - div_.offsetLeft;
-//     offsetB = ev.clientY - div_.offsetTop;
-//     ev.dataTransfer.setData("text/plain", ""); // Necesario para permitir el arrastre en algunos navegadores
-// });
-// // Permitir soltar en cualquier parte del documento
-// document.addEventListener("dragover", (ev) => {
-//     ev.preventDefault(); // Necesario para permitir el drop
-// });
-// // Evento cuando el div es soltado
-// document.addEventListener("drop", (ev) => {
-//     ev.preventDefault();
-//     div_.style.left = `${ev.clientX - offsetA}px`;
-//     div_.style.top = `${ev.clientY - offsetB}px`;
-// });

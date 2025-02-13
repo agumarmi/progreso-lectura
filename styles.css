@@ -18,6 +18,16 @@ body {
     
 }
 
+.color-picker-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    background-color: white;
+    
+}
+
 
 .buttons{
     display: flex;
@@ -80,7 +90,6 @@ button {
     top: 40%;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 20px;
     font-weight: bold;
 }
 
@@ -89,7 +98,6 @@ button {
     top: 60%;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 20px;
     font-weight: bold;
 }
 
@@ -147,9 +155,26 @@ input[type="number"], input[type="text"] {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.eyes{
+.eyes {
     position: absolute;
     top: 0%;
     right: 0%;
     text-align: center;    
+}
+.texto-paginas {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    text-align: center;    
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size:small;
+}
+
+.texto {
+    position: flex;
+    top: 0%;
+    left: 0%;
+    text-align: center;    
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
 }
