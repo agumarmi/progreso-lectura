@@ -137,7 +137,7 @@ input[type="number"], input[type="text"] {
 }
 .config {
     position: absolute;
-    top: 20%;
+    top: 10%;
     right: 2%;
     text-align: center;
     padding: 20px;
