@@ -15,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.es5.min.js"></script>
 </head>
-<body>
+<body onload="loadSavedData()">
     <div id="circle-container" draggable="true">
         <svg width="200" height="200" viewBox="0 0 200 200">
             <circle cx="100" cy="100" r="65" class="circle-background" />
@@ -50,8 +50,8 @@
     <div class="config" id="config" draggable="false">
         
             <button class="update" onclick="updateProgress()">Actualizar Progreso</button>
-            <button class="buttons" onclick="showProgress()">Mostrar/Ocultar progreso</button>
-            <button class="buttons"onclick="showContainer()">Mostrar/Ocultar configuración</button>
+            <!-- <button class="buttons" onclick="showProgress()">Mostrar/Ocultar progreso</button> -->
+            <!-- <button class="buttons"onclick="showContainer()">Mostrar/Ocultar configuración</button> -->
             <button class="buttons"onclick="addPage()">+1 página</button>
             <button class="buttons"onclick="delPage()">-1 página</button>
             <button class="buttons"onclick="showPages()">Mostrar/Ocultar páginas</button>

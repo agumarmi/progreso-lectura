@@ -1,8 +1,12 @@
+// Obtener el color guardado en localStorage
+const savedProgressColor = localStorage.getItem('progressColor');
+const savedTextColor = localStorage.getItem('textColor');
+
 // Inicialización de Pickr
-// Simple example, see optional options for more configuration.
 const pickr = Pickr.create({
     el: '.color-picker',
     theme: 'classic', // or 'monolith', or 'nano'
+    default: savedProgressColor || '#3498db',
     alignment: 'center',
     swatches: ["#f39c12", "#e74c3c", "#8e44ad", "#3498db", "#1abc9c", "#2ecc71", "#f1c40f", "#e67e22", "#ecf0f1"],
     components: {
@@ -23,6 +27,7 @@ const pickr = Pickr.create({
 pickr.on('save', (color) => {
     const selectedColor = color.toHEXA().toString(); // Obtener el color en formato hexadecimal
     document.getElementById('circle-progress').style.stroke = selectedColor;
+    localStorage.setItem('progressColor', selectedColor);
     pickr.hide()
 });
 
@@ -34,6 +39,7 @@ const pickr_text = Pickr.create({
     el: '.color-picker-text',
     theme: 'classic', // or 'monolith', or 'nano'
     alignment: 'center',
+    default: savedTextColor || '#3498db',
     swatches: ["#f39c12", "#e74c3c", "#8e44ad", "#3498db", "#1abc9c", "#2ecc71", "#f1c40f", "#e67e22", "#ecf0f1"],
     components: {
         preview: true,
@@ -53,7 +59,8 @@ const pickr_text = Pickr.create({
 pickr_text.on('save', (color) => {
     const selectedColor = color.toHEXA().toString(); // Obtener el color en formato hexadecimal
     document.getElementById('progress-text').style.color = selectedColor;
-    document.getElementById('progress-text-pages').style.color = selectedColor;
+    document.getElementById('progress-text-pages').style.color = selectedColor
+    localStorage.setItem('textColor', selectedColor);
     pickr_text.hide();
 });
 
@@ -103,7 +110,39 @@ function updateProgress() {
         document.getElementById('progress-text').textContent = `${textPrefix} 0%`;
         document.getElementById('progress-text-pages').textContent = `0 / 0`;
     }
+    // Guardar en localStorage
+    localStorage.setItem('pagesRead', pagesRead);
+    localStorage.setItem('totalPages', totalPages);
 }
+
+//--------------- Función para recuperar los datos guardados en localStorage
+function loadSavedData() {
+    const savedPagesRead = localStorage.getItem('pagesRead');
+    const savedTotalPages = localStorage.getItem('totalPages');
+    const savedProgressColor = localStorage.getItem('progressColor');
+    const savedTextColor = localStorage.getItem('textColor');
+
+    if (savedPagesRead !== null) {
+        document.getElementById('pages-read').value = savedPagesRead;
+    }
+    if (savedTotalPages !== null) {
+        document.getElementById('pages-total').value = savedTotalPages;
+    }
+    if (savedProgressColor) {
+        document.getElementById('circle-progress').style.stroke = savedProgressColor;
+    }
+    if (savedTextColor) {
+        document.getElementById('progress-text').style.color = savedTextColor;
+        document.getElementById('progress-text-pages').style.color = savedTextColor;
+    }
+
+    updateProgress(); // Actualizar la UI con los valores cargados
+}
+
+// Cargar datos al cargar la página
+window.onload = loadSavedData;
+
+
 //--------------- Función para mostrar todo
 function showAll() {
     showContainer();
@@ -125,15 +164,8 @@ function showProgress() {
 function showContainer() {
     container.style.display = (container.style.display === "none") ? "block" : "none";
 }
-
-//Función para resetear el progreso
-function resetProgress() {
-    document.getElementById('pages-read').value = 0;
-    document.getElementById('pages-total').value = 0;
-    updateProgress();
-}
- //Función para mostrar/ocultar las páginas 
- function showPages() {
+//Función para mostrar/ocultar las páginas 
+function showPages() {
     const pages = document.getElementById('progress-text-pages');
     pages.style.display = (pages.style.display === "none") ? "block" : "none";
  }
@@ -149,6 +181,15 @@ function resetProgress() {
     percentage.style.display = (percentage.style.display === "none") ? "block" : "none";
  }
 
+//--------------- Función para resetear el progreso
+function resetProgress() {
+    document.getElementById('pages-read').value = 0;
+    document.getElementById('pages-total').value = 0;
+    updateProgress();
+    localStorage.removeItem('pagesRead');
+    localStorage.removeItem('totalPages');
+}
+ 
 // Variables para guardar la posición
 let offsetX = 0, offsetY = 0;
 

@@ -56,7 +56,7 @@ button {
     cursor: grab;
     text-align: center;
     padding: 20px;
-    background-color: white;
+    background-color: rgb(255, 211, 169);
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     right: 0;
@@ -91,6 +91,8 @@ button {
     left: 50%;
     transform: translateX(-50%);
     font-weight: bold;
+    -webkit-text-stroke: 0.5px #7c7c7c60;
+	text-shadow: 0px 1px 2px #23430C;
 }
 
 #progress-text-pages {
@@ -99,6 +101,8 @@ button {
     left: 50%;
     transform: translateX(-50%);
     font-weight: bold;
+    -webkit-text-stroke: 0.5px #7c7c7c60;
+	text-shadow: 0px 1px 2px #23430C;
 }
 
 input[type="number"], input[type="text"] {
